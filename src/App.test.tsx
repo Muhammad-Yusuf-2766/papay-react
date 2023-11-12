@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
-import App from './app/App.tsx';
+import App from './app/App';
 
 test('renders learn react link', () => {
   const { getByText } = render(
@@ -11,5 +11,6 @@ test('renders learn react link', () => {
     </Provider>
   );
 
+  // eslint-disable-next-line testing-library/prefer-screen-queries
   expect(getByText(/learn/i)).toBeInTheDocument();
 });

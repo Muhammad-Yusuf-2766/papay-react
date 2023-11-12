@@ -1,11 +1,11 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './app/App.tsx';
+import App from './app/App';
 import './index.tsx';
-import { store } from './app/store.ts';
+import { store } from './app/store';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme.ts';
+import theme from './app/MaterialTheme';
 import { Provider } from 'react-redux';
 
 const container = document.getElementById('root')!;
@@ -14,14 +14,12 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Provider store = {store}>
-      <ThemeProvider theme = {theme}> 
+    <Provider store={store}>
+      <ThemeProvider theme={theme}> 
       <CssBaseline />
        <App />
        </ThemeProvider>
     </Provider>
-      
-
   </React.StrictMode>
 );
 
