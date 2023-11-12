@@ -2,14 +2,25 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './app/App.tsx';
 import './index.tsx';
+import { store } from './app/store.ts';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './theme.ts';
+import { Provider } from 'react-redux';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
+
 root.render(
   <React.StrictMode>
-
-      <App />
+    <Provider store = {store}>
+      <ThemeProvider theme = {theme}> 
+      <CssBaseline />
+       <App />
+       </ThemeProvider>
+    </Provider>
+      
 
   </React.StrictMode>
 );
