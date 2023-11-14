@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import '../css/App.css';
+import '../css/navbar.css';
 import { RippleBadge } from './MaterialTheme/styled';
 import {
   BrowserRouter as Router,
@@ -16,13 +17,27 @@ import { OrdersPage } from './screens/OrdersPage';
 import { MemberPage } from './screens/MemberPage';
 import { HelpPage } from './screens/HelpPage';
 import { LoginPage } from './screens/LoginPage';
+import { NavbarHome } from './components/header';
+import { NavbarRestaurant } from './components/header/restaurant';
+import { NavbarOthers } from './components/header/others';
 
 
 function App() {
+  const [path, setPath] = useState()
+  const main_path = window.location.pathname;
+
   return (
     <Router>
-      <div>
-        <nav>
+
+      {main_path === '/' ? (
+        <NavbarHome setPath={setPath} />
+      ) : main_path.includes("/restaurant") ? (
+        <NavbarRestaurant setPath={setPath} />
+      ) : (
+        <NavbarOthers setPath={setPath} />
+      )}
+
+        {/* <nav>
           <ul>
             <li>
               <Link to="/restaurant">RestaurantPage</Link>
@@ -46,7 +61,7 @@ function App() {
               <Link to="/">HomePage</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
@@ -73,7 +88,7 @@ function App() {
             <HomePage />  
           </Route>
         </Switch>
-      </div>
+
     </Router>
     
   );

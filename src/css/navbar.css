@@ -1,0 +1,82 @@
+.format.home_navbar {
+  width: 100%;
+  height: 773px;
+  display: flex;
+  background: url("/public/restaurant/restaurant_header_img.png");
+  background-size: cover;
+}
+.home_navbar .navbar_config {
+  width: 1290px;
+  height: 46px;
+  margin-left: 26px;
+  margin-top: 55px;
+}
+.home_navbar .navbar_links {
+  width: 752px;
+  height: 46px;
+}
+.home_navbar a {
+  text-decoration: none;
+}
+.home_navbar .hover_line  a {
+  color: white;
+}
+.home_navbar .underline {
+  display: block;
+  content: '';
+  border-bottom: solid 2px #D7b686;
+}
+.home_navbar .hover_line:after{
+  display: block;
+
+  content: '';
+  border-bottom: solid 2px #D7b686;
+  transform: scaleX(0);
+  transition: transform 250ms ease-in-out;
+}
+.home_navbar .hover_line:hover::after {
+  transform: scaleX(1);
+}
+.home_navbar .head_information {
+  display: flex;
+  flex-direction: row;
+  width: 1255px;
+  height: 477px;  
+}
+.home_navbar .define_restaurant {
+  position: relative;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  width: 484px;
+  height: 143px;
+ 
+  color: #FFF;
+  font-family: Poppins;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.home_navbar .timeline_service {
+  position: relative;
+  width: 466px;
+  height: 28px;
+  
+  color: #D4D4D4;
+  font-family: Poppins;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px;
+}
+.home_navbar .big_img {
+  position: relative;
+  width: 277px;
+  height: 277px;
+  margin-top: 41px;
+  margin-left: 494px;
+  background: url('/public/home/Halal_sign2.png');
+  border-radius: 90px 0 0 0;
+  filter: invert(26%) blur(1px);
+  background-size: cover;
+}
