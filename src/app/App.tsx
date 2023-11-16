@@ -22,6 +22,8 @@ import { NavbarHome } from './components/header';
 import { NavbarRestaurant } from './components/header/restaurant';
 import { NavbarOthers } from './components/header/others';
 import { Footer } from './components/footer';
+import { HomePage } from './screens/HomePage';
+import '../css/home.css'
 
 
 function App() {
@@ -59,7 +61,7 @@ function App() {
             <LoginPage />
           </Route>
           <Route path="/">
-            <HomePage />  
+            <HomePage/>  
           </Route>
         </Switch>
 
@@ -71,7 +73,3 @@ function App() {
 
 export default App;
 
-
-function HomePage() {
-  return <Container>HomePage</Container>;
-}
