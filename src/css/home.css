@@ -1,3 +1,5 @@
+/*==========  homepage statistics-frame css =========== */
+
 .homepage .static_frame {
     width: 100%;    
     background: #2C261E;
@@ -39,5 +41,22 @@
     font-size: 20px;
     font-style: normal;
     font-weight: 500;
+    line-height: normal;
+}
+
+/*===========  homepage statistics-frame css =========== */
+
+.homepage .top_restaurant_frame {
+    width: 100%;
+    height: 600px;
+    display: flex;
+    background: #0B0E11;
+}
+.homepage .category_title {
+    color: #E3C08D;
+    font-family: Roboto;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
     line-height: normal;
 }
