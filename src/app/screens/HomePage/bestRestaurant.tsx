@@ -12,7 +12,7 @@ export function BestRestaurants () {
         <div className="best_restaurant_frame">
             <img src="icons/Setka_icon.svg" alt="" style={{position:'absolute', left:'6%', transform:'rotate(90degree)'}} />
 
-            <Container sx={{mt:'153px'}}>
+            <Container sx={{paddingTop:'153px'}}>
                 <Stack flexDirection={'column'} alignItems={'center'}>
                     <Box className='category_title'>Zo’r Restaurantlar</Box>
                     <Stack flexDirection={'row'} sx={{ ml:"37px", mt:"43px"}}>
