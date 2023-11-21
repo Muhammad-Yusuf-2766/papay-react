@@ -3,21 +3,22 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { OneRestaurant } from "./oneRestaurant";
 import { ChosenDish } from "./chosenDish";
 import { AllRestaurants } from "./allRestaurants";
+import "../../../css/restaurant.css";
 
 export function RestaurantPage() {
-    let restaurant = useRouteMatch();
-    console.log(restaurant);
+  let restaurant = useRouteMatch();
+  console.log(restaurant);
   return (
     <div className="restaurant_page">
       <Switch>
         <Route path={`${restaurant.path}/dish/:dish_id`}>
-            <ChosenDish/>
+          <ChosenDish />
         </Route>
         <Route path={`${restaurant.path}/:restaurant_id`}>
-            <OneRestaurant/>
+          <OneRestaurant />
         </Route>
         <Route path={`${restaurant.path}`}>
-            <AllRestaurants/>
+          <AllRestaurants />
         </Route>
       </Switch>
     </div>

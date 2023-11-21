@@ -18,98 +18,98 @@ export function BestRestaurants () {
                     <Stack flexDirection={'row'} sx={{ ml:"37px", mt:"43px"}}>
                         <CssVarsProvider> {/*  CssVarsProvider bizga MUI ni ichida MUI/joy ni style larini ishlata olishligimiz uchun kerak  */}
 
-                            {/*============  Card 1 ======== */}
-                           <Card 
-                             variant="outlined"
-                             sx={{ 
-                               minHeight: 430, 
-                               minWidth:325, 
-                               mr:'35px', 
-                               cursor:'pointer', 
-                             }}
-                            >
-                              <CardOverflow>
-                                <AspectRatio ratio={'1'}>
-                                  <img src="restaurant/Top_restaurant_3.jpg" alt="Restaurant_img" />
-                                </AspectRatio>
-                                <IconButton 
-                                  aria-label="Like minimal photography"
-                                  size="md"
-                                  variant="solid"
-                                  color="neutral"
-                                  sx={{
-                                    position: "absolute",
-                                    zIndex: 2,
-                                    borderRadius: '50%',
-                                    right: '1rem',
-                                    bottom: 45,
-                                    transform: "translateY(165%)",
-                                    color: "rgb(0, 0, 0, .4)"
-                                  }}
+                              {/*============  Card 1 ======== */}
+                            <Card 
+                              variant="outlined"
+                              sx={{ 
+                                minHeight: 430, 
+                                minWidth:325, 
+                                mr:'35px', 
+                                cursor:'pointer', 
+                              }}
+                              >
+                                <CardOverflow>
+                                  <AspectRatio ratio={'1'}>
+                                    <img src="restaurant/Top_restaurant_3.jpg" alt="Restaurant_img" />
+                                  </AspectRatio>
+                                  <IconButton 
+                                    aria-label="Like minimal photography"
+                                    size="md"
+                                    variant="solid"
+                                    color="neutral"
+                                    sx={{
+                                      position: "absolute",
+                                      zIndex: 2,
+                                      borderRadius: '50%',
+                                      right: '1rem',
+                                      bottom: 45,
+                                      transform: "translateY(165%)",
+                                      color: "rgb(0, 0, 0, .4)"
+                                    }}
+                                    >
+                                      <Favorite style={{fill:'white'}}/>
+                                  </IconButton> 
+                                </CardOverflow> 
+                                <Typography level="h2" sx={{fontSize:"md", mt: 2}}>
+                                  Burak CZN restaurant
+                                </Typography> 
+                                <Typography level="body-md" sx={{mb:2}}>
+                                  <Link
+                                    href=''
+                                    startDecorator={<LocationOnRoundedIcon/>}
+                                    textColor={'neutral.700'}
                                   >
-                                    <Favorite style={{fill:'white'}}/>
-                                </IconButton> 
-                              </CardOverflow> 
-                              <Typography level="h2" sx={{fontSize:"md", mt: 2}}>
-                                 Burak CZN restaurant
-                               </Typography> 
-                               <Typography level="body-md" sx={{mb:2}}>
-                                <Link
-                                  href=''
-                                  startDecorator={<LocationOnRoundedIcon/>}
-                                  textColor={'neutral.700'}
-                                >
-                                    Istanbul, bahcesaray 4-45
-                                </Link>
-                               </Typography>
-                               <Typography level="body-md" sx={{mb:2}}>
-                                <Link
-                                  href=''
-                                  startDecorator={<CallIcon/>}
-                                  textColor={'neutral.700'}
-                                >
-                                     + 90 312 213 2965
-                                </Link>
-                               </Typography>
-                               <CardOverflow
-                               sx={{
-                                display: 'flex',
-                                flexDirection:'row',
-                                gap: 1.5,
-                                py: 1.5,
-                                px: "var(--card-padding)",
-                                borderTop: "1px solid"
-                               }}
-                             >
-                                
-                                <Typography 
-                                  level="body-md"
-                                  sx={{
-                                    fontWeight: 'md',
-                                    color: "neutral",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    ml:'15px'
-                                  }}
-                                >
-                                    100{" "}
-                                    <VisibilityIcon sx={{fontSize: 20, ml:'5px'}} />
+                                      Istanbul, bahcesaray 4-45
+                                  </Link>
                                 </Typography>
-                                <Box sx={{width: 2, bgcolor:'divider'}}/>
-                                
-                                <Typography
-                                   sx={{
-                                    fontWeight:'md',
-                                    color: "neutral",
-                                    alignItems: 'center',
-                                    display:'flex'
-                                   }}
-                                >
-                                    <div>50</div>
-                                    <Favorite sx={{fontSize: 20, marginLeft:'5px'}} />
+                                <Typography level="body-md" sx={{mb:2}}>
+                                  <Link
+                                    href=''
+                                    startDecorator={<CallIcon/>}
+                                    textColor={'neutral.700'}
+                                  >
+                                      + 90 312 213 2965
+                                  </Link>
                                 </Typography>
-                             </CardOverflow>  
-                            </Card>
+                                <CardOverflow
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection:'row',
+                                  gap: 1.5,
+                                  py: 1.5,
+                                  px: "var(--card-padding)",
+                                  borderTop: "1px solid"
+                                }}
+                              >
+                                  
+                                  <Typography 
+                                    level="body-md"
+                                    sx={{
+                                      fontWeight: 'md',
+                                      color: "neutral",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      ml:'15px'
+                                    }}
+                                  >
+                                      100{" "}
+                                      <VisibilityIcon sx={{fontSize: 20, ml:'5px'}} />
+                                  </Typography>
+                                  <Box sx={{width: 2, bgcolor:'divider'}}/>
+                                  
+                                  <Typography
+                                    sx={{
+                                      fontWeight:'md',
+                                      color: "neutral",
+                                      alignItems: 'center',
+                                      display:'flex'
+                                    }}
+                                  >
+                                      <div>50</div>
+                                      <Favorite sx={{fontSize: 20, marginLeft:'5px'}} />
+                                  </Typography>
+                              </CardOverflow>  
+                              </Card>
 
                             {/*============  Card 2 ======== */}
                            <Card 
