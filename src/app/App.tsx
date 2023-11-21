@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import '../css/App.css';
 import '../css/navbar.css';
 import '../css/footer.css';
-import { RippleBadge } from './MaterialTheme/styled';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 // import Users from './components/users';
 // import Dishes from './components/dishes';
