@@ -52,7 +52,7 @@ export function Events() {
           </Box>
           <Box className="prev_next_frame">
             <img
-              src="icons/Arrow-right.svg"
+              src="/icons/Arrow-right.svg"
               className="swiper-button-prev"
               style={{ transform: "rotate(180deg)" }}
               alt=""
