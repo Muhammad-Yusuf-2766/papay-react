@@ -8,7 +8,6 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PausedOrders from "../../components/orders/pausedOrders";
 import ProcessOrders from "../../components/orders/processOrder";
 import FinishedOrders from "../../components/orders/finishedOrders";
-import Marginer from "../../components/marginer";
 
 export function OrdersPage() {
   // Initializations //
