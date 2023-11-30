@@ -5,13 +5,19 @@ import Favorite from "@mui/icons-material/Favorite";
 import Checkbox from "@mui/material/Checkbox";
 import moment from "moment";
 import { Box, Link, Stack } from "@mui/material";
+import { DatePicker } from "@mui/lab";
 
 export function TargetArticles(props: any) {
+   const today = function moment() {
+    return today 
+   }
+
   return (
     <Stack>
       {props.targetBoArticles?.map((article: any, index: string) => {
         return (
           <Link
+            key={index}
             className="article_box"
             sx={{ textDecoration: "none" }}
             href={""}
@@ -47,8 +53,8 @@ export function TargetArticles(props: any) {
                     marginRight: "20px",
                   }}
                 >
-
-                  <span>22-05-15  02:08</span>
+                
+                <span>{moment().format("YY-MM-DD HH:mm")}</span>
 
                   <Checkbox
                     icon={<FavoriteBorder />}

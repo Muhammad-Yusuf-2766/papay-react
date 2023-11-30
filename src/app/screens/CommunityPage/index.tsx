@@ -73,7 +73,7 @@ export function CommunityPage() {
                 sx={{ justifyContent: "center", display: "flex", mt: 2 }}
                 >
                   <Pagination
-                    count={3}
+                    count={14}
                     page={1}
                     renderItem={(item) => (
                       <PaginationItem
