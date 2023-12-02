@@ -14,6 +14,8 @@ import { TabList } from "@mui/lab";
 import { MemberPosts } from "./memberPosts";
 // import { MemberPosts } from "./MemberPosts";
 import styled from 'styled-components';
+import { TuiEditor } from "../../components/tuiEditor/tuiEditor";
+import TViewer from "../../components/tuiEditor/TVieewer";
 
 export function VisitMyPage(props: any) {
   /** INITIALIZATIONS **/
@@ -74,11 +76,15 @@ export function VisitMyPage(props: any) {
                 </TabPanel>
                 <TabPanel value="4">
                   <Box className="menu_name">Maqola Yozish</Box>
-                  <Box className="Write_content"></Box>
+                  <Box className="Write_content">
+                    <TuiEditor />
+                  </Box>
                 </TabPanel>
                 <TabPanel value="5">
                   <Box className="menu_name">Tanlangan Maqola</Box>
-                  <Box className="menu_content"></Box>
+                  <Box className="menu_content">
+                    <TViewer text={`<h2>Assalamu alaykum</h2>`} />
+                  </Box>
                 </TabPanel>
                 <TabPanel value="6">
                   <Box className="menu_name">Ma'lumotlarni o'zgartirish</Box>

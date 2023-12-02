@@ -13,6 +13,7 @@ import { TabList } from "@mui/lab";
 import { MemberPosts } from "./memberPosts";
 // import { MemberPosts } from "./MemberPosts";
 import styled from 'styled-components';
+import TViewer from "../../components/tuiEditor/TVieewer";
 
 export function VisitOtherPage(props: any) {
   /** INITIALIZATIONS **/
@@ -73,7 +74,9 @@ export function VisitOtherPage(props: any) {
                 </TabPanel>
                 <TabPanel value="4">
                   <Box className="menu_name">Tanlangan Maqola</Box>
-                  <Box className="menu_content"></Box>
+                  <Box className="menu_content">
+                  <TViewer text={`<h2>Assalamu alaykum</h2>`} />
+                  </Box>
                 </TabPanel>
               </Box>
             </Stack>

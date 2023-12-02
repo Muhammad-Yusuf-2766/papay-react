@@ -19,7 +19,6 @@
   width: 850px;
   height: auto;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 .member_page .my_page_left .menu_name {
@@ -120,6 +119,7 @@
   height: auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 .member_page .my_page_frame .my_page_right .order_info_box {
   width: 100%;
