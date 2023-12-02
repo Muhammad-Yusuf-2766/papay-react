@@ -116,7 +116,7 @@
 .member_page .my_page_frame .my_page_right {
   margin-top: 30px;
   margin-left: 30px;
-  width: 40%;
+  width: auto;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -284,7 +284,7 @@
      color: white;
 }
 .member_page .follow_box .follow_cancel_btn {
-    width: 185px;
+    width: auto;
 height: 57px;
 flex-shrink: 0;
     border-radius: 26px;
