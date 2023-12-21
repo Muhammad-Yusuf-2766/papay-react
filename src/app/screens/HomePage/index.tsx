@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Statistics } from "./statistics";
 import { TopRestaurants } from './topRestaurant';
 import { BestRestaurants } from './bestRestaurant';
@@ -9,6 +9,15 @@ import { Recommendations } from './recommendations';
 
 
 export function HomePage() {
+
+    // Selector: store => data
+
+    useEffect(() => {
+        // backend data request => data
+
+        // slice = data => store 
+    }, [])
+
     return ( <div className="homepage">
         <Statistics />
         <TopRestaurants />
