@@ -8,10 +8,10 @@ export interface Restaurant {
   mb_password: string;
   mb_type: string;
   mb_status: string;
-  mb_description: string;
+  mb_description?: string;
   mb_address: string;
   mb_image: string;
-  mb_point: number;
+  mb_point: null;
   mb_top: string;
   mb_views: number;
   mb_likes: number;
