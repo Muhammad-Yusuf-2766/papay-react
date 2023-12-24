@@ -8,14 +8,12 @@ import { Events } from "./events";
 import { Recommendations } from "./recommendations";
 
 // REDUX
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import { createSelector } from "reselect";
 import {
   setBestRestaurants,
   setTopRestaurants,
 } from "../../screens/HomePage/slice";
-import { retrieveTopRestaurants } from "../../screens/HomePage/selector";
 import { Restaurant } from "../../../types/user";
 import RestaurantApiService from "../../ApiServices/restaurantApiService";
 
