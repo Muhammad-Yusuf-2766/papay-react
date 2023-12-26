@@ -51,6 +51,30 @@ export default function AuthenticationModal(props: any) {
         mb_password = e.target.value
     };
 
+    const handleSignUpRequest = async () => {
+        try {
+            const is_fulfilled = mb_nick !== "" && mb_password !== "" && mb_phone !== 0;
+            assert.ok(is_fulfilled, Definer.input_err1)
+
+            const signup_data = {
+                mb_nick: mb_nick,
+                mb_phone: mb_phone,
+                mb_password: mb_password
+            }
+
+            const memberApiService = new MemberApiService()
+            await memberApiService.signUpRequest(signup_data)
+
+            props.handleSignUpClose()
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            window.location.reload;
+
+        } catch (error) {
+            console.log(error)
+            //todo: sweetalert ....
+        }
+    }
+
     const handleLoginRequest = async () => {
         try {
             const is_fulfilled = mb_nick !== "" && mb_password !== "";
@@ -122,7 +146,7 @@ export default function AuthenticationModal(props: any) {
                 variant="outlined"
               />
               <Fab
-                // onClick={}
+                onClick={handleSignUpRequest}
                 sx={{ marginTop: "30px", width: "120px" }}
                 variant="extended"
                 color="primary"
