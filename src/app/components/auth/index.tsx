@@ -9,6 +9,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import  assert from "assert";
 import { Definer } from "../../../lib/definer";
 import MemberApiService from "../../ApiServices/memberApiService";
+import { sweetErrorHandling } from "../../../lib/sweetAlet";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -95,6 +96,7 @@ export default function AuthenticationModal(props: any) {
         } catch (error) {
             console.log(error)
             props.handleLoginClose()
+            sweetErrorHandling(error).then()
             //todo: sweetalert ....
         }
     }

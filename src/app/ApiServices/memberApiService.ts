@@ -42,6 +42,22 @@ class MemberApiService {
         }
     }
 
+    public async logOutRequest() {
+        try {
+            const result = await axios.get(this.path+"/logout", {withCredentials: true})
+
+            assert.ok(result?.data, Definer.general_err1)
+            assert.ok(result?.data?.state != 'fail', result?.data?.message)
+
+            const logOutResult = result.data.state
+            return logOutResult == 'success'
+        } catch (error: any) {
+            console.log(`ERROR::: getTargetProducts ${error.message}`);
+            throw error
+        }
+    }
+
+
 }
 
 export default MemberApiService
