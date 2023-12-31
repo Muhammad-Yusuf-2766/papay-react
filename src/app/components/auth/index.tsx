@@ -68,7 +68,7 @@ export default function AuthenticationModal(props: any) {
 
             props.handleSignUpClose()
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            window.location.reload;
+            window.location.reload();
 
         } catch (error) {
             console.log(error)
@@ -91,7 +91,7 @@ export default function AuthenticationModal(props: any) {
 
             props.handleLoginClose()
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            window.location.reload;
+            window.location.reload();
 
         } catch (error) {
             console.log(error)

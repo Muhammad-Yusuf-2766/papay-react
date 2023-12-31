@@ -15,7 +15,7 @@ import { createSelector } from "reselect";
 import { retrieveTopRestaurants } from "../../screens/HomePage/selector";
 import { Restaurant } from "../../../types/user";
 import { serviceApi } from "../../../lib/config";
-import { sweetErrorHandling } from "../../../lib/sweetAlet";
+import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "../../../lib/sweetAlet";
 import assert from "assert";
 import { Definer } from "../../../lib/definer";
 import MemberApiService from "../../ApiServices/memberApiService";
@@ -60,6 +60,7 @@ export function TopRestaurants() {
         refs.current[like_result.like_ref_id].innerHtml--
       }
 
+      await sweetTopSmallSuccessAlert("Success", 700, false)
     } catch (error: any) {
       console.log(" ERROR:: targetTop", error);
       sweetErrorHandling(error).then();
@@ -122,6 +123,7 @@ export function TopRestaurants() {
                       }}
                     >
                       <IconButton
+                      onClick={(e) => {e.stopPropagation()}}
                         aria-label="Like minimal photography"
                         size="md"
                         variant="solid"
