@@ -1,7 +1,7 @@
 import { Box, Button, Container, Pagination, PaginationItem, Stack } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search"
 import  IconButton  from "@mui/joy/IconButton";
-import React from "react";
+import React, { useEffect } from "react";
 import { AspectRatio, Card, CardOverflow, CssVarsProvider, Link, Typography } from "@mui/joy";
 import { Favorite } from "@mui/icons-material";
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
@@ -9,10 +9,41 @@ import CallIcon from '@mui/icons-material/Call';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+// ============  REDUX ============//
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrieveTargetRestaurants } from "../../screens/RestaurantPage/selector";
+import { Restaurant } from "../../../types/user";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import {
+  setTargetRestaurants
+} from "../../screens/RestaurantPage/slice";
 
 const order_list =Array.from(Array(8).keys());
 
+//===== Redux Slice ===== //
+const actionDispatch = (dispach: Dispatch) => ({
+  setTargetRestaurants: (data: Restaurant[]) => dispach(setTargetRestaurants(data)),
+});
+
+//===== Redux Selector ===== //
+const targetRestaurantsRetriever = createSelector(
+  retrieveTargetRestaurants,
+  (targetRestaurants) => ({
+    targetRestaurants,
+  })
+);
+
 export function AllRestaurants() {
+    //===== Initialization ===== //
+    const {setTargetRestaurants} = actionDispatch(useDispatch())
+    const {targetRestaurants} = useSelector(targetRestaurantsRetriever)
+
+    useEffect(() => {
+      // ToDo: retrieve_Target_Restaurants data
+    }, [])
+
     return <div className="all_restaurants">
         <Container>
             <Stack className="column" alignItems={"center"}>
