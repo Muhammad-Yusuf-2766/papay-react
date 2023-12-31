@@ -3,6 +3,8 @@ import assert from "assert";
 import { serviceApi } from "../../lib/config"
 import { Definer } from "../../lib/definer";
 import { Member } from "../../types/user";
+import { data } from 'dom7';
+import { MemberLiken } from "../../types/others";
 
 class MemberApiService {
     private readonly path: string
@@ -56,7 +58,23 @@ class MemberApiService {
             throw error
         }
     }
+    
+    public async memberLikeTarget(data: any) {
+        try {
+            const url = "/member-liken"
+            const result = await axios.post(this.path+url, data, {withCredentials: true})
+            assert.ok(result?.data, Definer.general_err1)
+            assert.ok(result?.data?.state != 'fail', result?.data?.message)
 
+            console.log("State=== ", result.data.data);
+            const like_result: MemberLiken = result.data.data
+            return like_result
+            
+        } catch (error: any) {
+            console.log(`ERROR::: memberLikeTarget ${error.message}`);
+            throw error
+        }
+    }
 
 }
 

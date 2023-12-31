@@ -1,4 +1,5 @@
 export const Definer = {
     input_err1: 'att: Please fulfill all inputs',
-    general_err1: 'att: Something went wrong'
+    general_err1: 'att: Something went wrong',
+    auth_err1: "att: Please Login first!"
 }
