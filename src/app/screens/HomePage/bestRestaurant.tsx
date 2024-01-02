@@ -57,13 +57,13 @@ export function BestRestaurants() {
         group_type: "member",
       });
       assert.ok(like_result, Definer.general_err1);
-
+  
       if (like_result.like_status > 0) {
         e.target.style.fill = "red";
-        refs.current[like_result.like_ref_id].innerHtml++;
+        refs.current[like_result.like_ref_id].innerText = (parseInt(refs.current[like_result.like_ref_id].innerText) + 1).toString();
       } else {
         e.target.style.fill = "white";
-        refs.current[like_result.like_ref_id].innerHtml--;   
+        refs.current[like_result.like_ref_id].innerText = (parseInt(refs.current[like_result.like_ref_id].innerText) - 1).toString();
       }
       await sweetTopSmallSuccessAlert("Success", 700, false);
     } catch (error: any) {
@@ -71,6 +71,7 @@ export function BestRestaurants() {
       sweetErrorHandling(error).then();
     }
   };
+  
 
   return (
     <div className="best_restaurant_frame">

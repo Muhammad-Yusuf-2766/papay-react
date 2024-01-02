@@ -49,10 +49,10 @@ class MemberApiService {
             const result = await axios.get(this.path+"/logout", {withCredentials: true})
 
             assert.ok(result?.data, Definer.general_err1)
-            assert.ok(result?.data?.state != 'fail', result?.data?.message)
+            assert.ok(result?.data?.state !== 'fail', result?.data?.message)
 
             const logOutResult = result.data.state
-            return logOutResult == 'success'
+            return logOutResult === 'success'
         } catch (error: any) {
             console.log(`ERROR::: getTargetProducts ${error.message}`);
             throw error
@@ -64,7 +64,7 @@ class MemberApiService {
             const url = "/member-liken"
             const result = await axios.post(this.path+url, data, {withCredentials: true})
             assert.ok(result?.data, Definer.general_err1)
-            assert.ok(result?.data?.state != 'fail', result?.data?.message)
+            assert.ok(result?.data?.state !== 'fail', result?.data?.message)
 
             console.log("State=== ", result.data.data);
             const like_result: MemberLiken = result.data.data
