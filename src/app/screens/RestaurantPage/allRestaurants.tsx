@@ -23,15 +23,6 @@ import CallIcon from "@mui/icons-material/Call";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-// ============  REDUX ============//
-import { useSelector } from "react-redux";
-import { createSelector } from "reselect";
-import { retrieveTargetRestaurants } from "../../screens/RestaurantPage/selector";
-import { Restaurant } from "../../../types/user";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
-import { setTargetRestaurants } from "../../screens/RestaurantPage/slice";
-import RestaurantApiService from "../../ApiServices/restaurantApiService";
 import { SearchObj } from "../../../types/others";
 import { serviceApi } from "../../../lib/config";
 import assert from "assert";
@@ -41,6 +32,17 @@ import {
   sweetErrorHandling,
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlet";
+import { useHistory } from "react-router-dom";
+// ============  REDUX ============//
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrieveTargetRestaurants } from "../../screens/RestaurantPage/selector";
+import { Restaurant } from "../../../types/user";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setTargetRestaurants } from "../../screens/RestaurantPage/slice";
+import RestaurantApiService from "../../ApiServices/restaurantApiService";
+
 
 // const order_list =Array.from(Array(8).keys());
 
@@ -60,6 +62,7 @@ const targetRestaurantsRetriever = createSelector(
 
 export function AllRestaurants() {
   //===== Initialization ===== //
+  const history = useHistory()
   const { setTargetRestaurants } = actionDispatch(useDispatch());
   const { targetRestaurants } = useSelector(targetRestaurantsRetriever);
   const refs: any = useRef([]);
@@ -79,6 +82,9 @@ export function AllRestaurants() {
   }, [targetSearchObject]);
 
   // ========== HANDLERS ==============//
+  const chosenRestaurantHandler = (id: string) => {
+    history.push(`/restaurant/${id}`)
+  }
   const searchHandler = (category: string) => {
     targetSearchObject.page = 1;
     targetSearchObject.order = category;
@@ -160,12 +166,14 @@ export function AllRestaurants() {
                 const image_path = `${serviceApi}/${ele.mb_image}`;
                 return (
                   <Card
+                  onClick={() => chosenRestaurantHandler(ele._id)}
                     variant="outlined"
                     sx={{
                       minHeight: 410,
                       minWidth: 290,
                       mx: "17px",
                       my: "20px",
+                      cursor: "pointer"
                     }}
                   >
                     <CardOverflow>

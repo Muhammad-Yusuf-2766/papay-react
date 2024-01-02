@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -12,11 +12,88 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import MonetizationIcon from "@mui/icons-material/MonetizationOn";
 import StarIcon from "@mui/icons-material/Star";
 import { Margin } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
+// ============  REDUX ============//
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import {
+  retrieveChosenRestaurant,
+  retrieveTargetProducts,
+  retrievetRandomRestaurants,
+} from "../../screens/RestaurantPage/selector";
+import { Restaurant } from "../../../types/user";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import {
+  setChosenProduct,
+  setChosenRestaurant,
+  setRandomRestaurants,
+  setTargetProducts,
+  setTargetRestaurants,
+} from "../../screens/RestaurantPage/slice";
+import RestaurantApiService from "../../ApiServices/restaurantApiService";
+import { ProductSearchObj } from "../../../types/others";
+import ProductApiService from "../../ApiServices/productApiService";
+import { Product } from "../../../types/product";
+import { serviceApi } from "../../../lib/config";
 
-const restaurant_list = Array.from(Array(10).keys());
-const products_list = Array.from(Array(8).keys());
+//===== Redux Slice ===== //
+const actionDispatch = (dispach: Dispatch) => ({
+  setRandomRestaurants: (data: Restaurant[]) =>
+    dispach(setRandomRestaurants(data)),
+  setChosenRestaurant: (data: Restaurant) => dispach(setChosenRestaurant(data)),
+  setTargetProducts: (data: Product[]) => dispach(setTargetProducts(data)),
+  setChosenProduct: (data: Product) => dispach(setChosenProduct(data)),
+});
+
+//===== Redux Selector ===== //
+const RandomRestaurantsRetriever = createSelector(
+  retrievetRandomRestaurants,
+  (randomRestaurants) => ({
+    randomRestaurants,
+  })
+);
+const ChosenRestaurantRetriever = createSelector(
+  retrieveChosenRestaurant,
+  (chosenRestaurant) => ({
+    chosenRestaurant,
+  })
+);
+const TargetProductsRetriever = createSelector(
+  retrieveTargetProducts,
+  (targetProducts) => ({
+    targetProducts,
+  })
+);
 
 export function OneRestaurant() {
+  //===== Initialization ===== //
+  let { restaurant_id } = useParams<{ restaurant_id: string }>();
+  const { setRandomRestaurants, setChosenRestaurant, setTargetProducts } =
+    actionDispatch(useDispatch());
+  const { randomRestaurants } = useSelector(RandomRestaurantsRetriever);
+  const { chosenRestaurant } = useSelector(ChosenRestaurantRetriever);
+  const { targetProducts } = useSelector(TargetProductsRetriever);
+  const [chosenRestaurantId, setchosenRestaurantId] =
+    useState<string>(restaurant_id);
+  const [targetProductSearchObj, settargetProductSearchObj] =
+    useState<ProductSearchObj>({
+      page: 1,
+      limit: 9,
+      order: "createdAt",
+      restaurant_mb_id: restaurant_id,
+      product_collection: "dish",
+    });
+
+  useEffect(() => {
+    const productService = new ProductApiService();
+    productService
+      .getTargetProducts(targetProductSearchObj)
+      .then((data) => setTargetProducts(data))
+      .catch((err) => console.log("ERROR: OneRestaurant useEffect::", err));
+  }, [targetProductSearchObj]);
+
+  // ========== HANDLERS ==============//
   return (
     <div className="single_restaurant">
       <Container>
@@ -64,7 +141,7 @@ export function OneRestaurant() {
                 prevEl: ".restaurant-prev",
               }}
             >
-              {restaurant_list.map((ele, index) => {
+              {/* {restaurant_list.map((ele, index) => {
                 return (
                   <SwiperSlide
                     className="restaurant_avatars"
@@ -75,7 +152,7 @@ export function OneRestaurant() {
                     <span>Tushkish Chef</span>
                   </SwiperSlide>
                 );
-              })}
+              })} */}
             </Swiper>
             <Box className="next_btn restaurant-next">
               <ArrowForwardIosIcon sx={{ fontSize: 40, color: "white" }} />
@@ -105,7 +182,7 @@ export function OneRestaurant() {
           </Stack>
 
           <Stack
-            style={{ width: "100%", display:'flex', minHeight: "600px" }}
+            style={{ width: "100%", display: "flex", minHeight: "600px" }}
             flexDirection={"row"}
           >
             <Stack className="dish_category_box">
@@ -129,14 +206,19 @@ export function OneRestaurant() {
             </Stack>
 
             <Stack className="dish_wrapper">
-              {products_list.map((ele, index) => {
-                const size_volume = "normal size";
+              {targetProducts.map((product: Product) => {
+                const image_path = `${serviceApi}/${product.product_images[0]}`;
+                const size_volume =
+                  product.product_collection === "drinks"
+                    ? product.product_volume + ".L"
+                    : product.product_size + " size";
+                    console.log("Imageeeee::",product.product_images)
                 return (
-                  <Box className="dish_box" key={`${index}`}>
+                  <Box className="dish_box" key={product._id}>
                     <Box
                       className="dish_img"
                       sx={{
-                        backgroundImage: `url("/others/one_restaurant_dish.png")`,
+                        backgroundImage: `url(${image_path})`,
                       }}
                     >
                       <div className="dish_sale">{size_volume}</div>
@@ -144,11 +226,20 @@ export function OneRestaurant() {
                         className="like_view_btn"
                         style={{ left: "36px" }}
                       >
-                        <Badge badgeContent={5} color="primary">
+                        <Badge
+                          badgeContent={product.product_likes}
+                          color="primary"
+                        >
                           <CheckBox
                             icon={<FavoriteBorder style={{ color: "white" }} />}
+                            id={product._id}
                             checkedIcon={<Favorite style={{ color: "red" }} />}
-                            checked={true}
+                            checked={
+                              product?.me_liked &&
+                              product?.me_liked[0]?.my_favorite
+                                ? true
+                                : false
+                            }
                           />
                         </Badge>
                       </Button>
@@ -163,7 +254,10 @@ export function OneRestaurant() {
                         className="like_view_btn"
                         style={{ right: "36px" }}
                       >
-                        <Badge badgeContent={247} color="primary">
+                        <Badge
+                          badgeContent={product.product_views}
+                          color="primary"
+                        >
                           <CheckBox
                             icon={
                               <RemoveRedEyeIcon style={{ color: "white" }} />
@@ -173,9 +267,12 @@ export function OneRestaurant() {
                       </Button>
                     </Box>
                     <Box className="dish_desc">
-                      <span className="dish_title_text">Mazali Mix Plate</span>
+                      <span className="dish_title_text">
+                        {product.product_name}
+                      </span>
                       <div className="dish_desc_text">
-                        <MonetizationIcon />8
+                        <MonetizationIcon />
+                        {product.product_price}
                       </div>
                     </Box>
                   </Box>
@@ -195,7 +292,7 @@ export function OneRestaurant() {
             alignItems: "center",
           }}
         >
-          <Box className="category_title">Oshxona haqida fikrlar</Box>
+          <Box className="category_title"></Box>
           <Stack
             flexDirection={"row"}
             display={"flex"}
@@ -206,7 +303,11 @@ export function OneRestaurant() {
               return (
                 <Box className="review_box" key={index}>
                   <Box display={"flex"} justifyContent={"center"}>
-                    <img className="review_img" src="/community/Sami_Yusuf.jpg" alt="Customer_img" />
+                    <img
+                      className="review_img"
+                      src="/community/Sami_Yusuf.jpg"
+                      alt="Customer_img"
+                    />
                   </Box>
                   <span className="review_name">Sami Yusuf</span>
                   <span className="review_prof">Foydalanuvchi</span>
@@ -267,7 +368,7 @@ export function OneRestaurant() {
 
         <Box className="category_title">Oshxona Manzili</Box>
         <iframe
-        style={{marginTop:"60px", marginBottom:"50px"}}
+          style={{ marginTop: "60px", marginBottom: "50px" }}
           title="This is a unique title"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3006.3245770469684!2d28.984466575749938!3d41.10560191342703!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab56ac7ff7009%3A0x84c6097c80637640!2sCzn%20Burak%20Vadi%20%C4%B0stanbul!5e0!3m2!1sru!2skr!4v1700656539501!5m2!1sru!2skr"
           width="1320px"
