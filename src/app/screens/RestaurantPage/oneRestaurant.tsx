@@ -12,7 +12,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import MonetizationIcon from "@mui/icons-material/MonetizationOn";
 import StarIcon from "@mui/icons-material/Star";
 import { Margin } from "@mui/icons-material";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 // ============  REDUX ============//
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -36,6 +36,7 @@ import { ProductSearchObj } from "../../../types/others";
 import ProductApiService from "../../ApiServices/productApiService";
 import { Product } from "../../../types/product";
 import { serviceApi } from "../../../lib/config";
+import { data } from 'dom7';
 
 //===== Redux Slice ===== //
 const actionDispatch = (dispach: Dispatch) => ({
@@ -68,6 +69,7 @@ const TargetProductsRetriever = createSelector(
 
 export function OneRestaurant() {
   //===== Initialization ===== //
+  const history = useHistory()
   let { restaurant_id } = useParams<{ restaurant_id: string }>();
   const { setRandomRestaurants, setChosenRestaurant, setTargetProducts } =
     actionDispatch(useDispatch());
@@ -76,16 +78,20 @@ export function OneRestaurant() {
   const { targetProducts } = useSelector(TargetProductsRetriever);
   const [chosenRestaurantId, setchosenRestaurantId] =
     useState<string>(restaurant_id);
-  const [targetProductSearchObj, settargetProductSearchObj] =
+  const [targetProductSearchObj, setTargetProductSearchObj] =
     useState<ProductSearchObj>({
       page: 1,
       limit: 9,
       order: "createdAt",
       restaurant_mb_id: restaurant_id,
-      product_collection: "dish",
+      product_collection: "drinks",
     });
 
   useEffect(() => {
+
+    const restaurantService = new RestaurantApiService()
+    restaurantService.getRestaurants({page:1, limit: 10, order: "random"}).then(data => setRandomRestaurants(data)).catch(err => console.log(err))
+
     const productService = new ProductApiService();
     productService
       .getTargetProducts(targetProductSearchObj)
@@ -94,6 +100,13 @@ export function OneRestaurant() {
   }, [targetProductSearchObj]);
 
   // ========== HANDLERS ==============//
+  const chosenRestaurantHandler = (id: string) => {
+    setchosenRestaurantId(id)
+    targetProductSearchObj.restaurant_mb_id = id
+    setTargetProductSearchObj({...targetProductSearchObj})
+    history.push(`/restaurant/${id}`)
+  }
+  
   return (
     <div className="single_restaurant">
       <Container>
@@ -141,18 +154,20 @@ export function OneRestaurant() {
                 prevEl: ".restaurant-prev",
               }}
             >
-              {/* {restaurant_list.map((ele, index) => {
+              {randomRestaurants.map((ele: Restaurant) => {
+                const image_path = `${serviceApi}/${ele.mb_image}`
                 return (
                   <SwiperSlide
+                  onClick={() => chosenRestaurantHandler(ele._id)}
                     className="restaurant_avatars"
-                    key={index}
+                    key={ele._id}
                     style={{ cursor: "pointer" }}
                   >
-                    <img src="/restaurant/burak restaurant.jpg" alt="chef-img" />
-                    <span>Tushkish Chef</span>
+                    <img src={image_path} alt="chef-img" />
+                    <span>{ele.mb_nick}</span>
                   </SwiperSlide>
                 );
-              })} */}
+              })}
             </Swiper>
             <Box className="next_btn restaurant-next">
               <ArrowForwardIosIcon sx={{ fontSize: 40, color: "white" }} />
