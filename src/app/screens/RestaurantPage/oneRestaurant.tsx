@@ -36,11 +36,14 @@ import { ProductSearchObj } from "../../../types/others";
 import ProductApiService from "../../ApiServices/productApiService";
 import { Product } from "../../../types/product";
 import { serviceApi } from "../../../lib/config";
-import { data } from 'dom7';
+import { data } from "dom7";
 import assert from "assert";
 import { Definer } from "../../../lib/definer";
 import MemberApiService from "../../ApiServices/memberApiService";
-import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "../../../lib/sweetAlet";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../../lib/sweetAlet";
 
 //===== Redux Slice ===== //
 const actionDispatch = (dispach: Dispatch) => ({
@@ -73,7 +76,7 @@ const TargetProductsRetriever = createSelector(
 
 export function OneRestaurant() {
   //===== Initialization ===== //
-  const history = useHistory()
+  const history = useHistory();
   let { restaurant_id } = useParams<{ restaurant_id: string }>();
   const { setRandomRestaurants, setChosenRestaurant, setTargetProducts } =
     actionDispatch(useDispatch());
@@ -90,39 +93,50 @@ export function OneRestaurant() {
       restaurant_mb_id: restaurant_id,
       product_collection: "dish",
     });
-    const [productRebuild, setProductRebuild] = useState<Date>(new Date())
+  const [productRebuild, setProductRebuild] = useState<Date>(new Date());
 
   useEffect(() => {
+    const restaurantService = new RestaurantApiService();
+    restaurantService
+      .getRestaurants({ page: 1, limit: 10, order: "random" })
+      .then((data) => setRandomRestaurants(data))
+      .catch((err) => console.log(err));
 
-    const restaurantService = new RestaurantApiService()
-    restaurantService.getRestaurants({page:1, limit: 10, order: "random"}).then(data => setRandomRestaurants(data)).catch(err => console.log(err))
+    restaurantService
+      .getChosenRestaurant(chosenRestaurantId)
+      .then((data) => setChosenRestaurant(data))
+      .catch((err) => console.log(err));
 
     const productService = new ProductApiService();
     productService
       .getTargetProducts(targetProductSearchObj)
       .then((data) => setTargetProducts(data))
       .catch((err) => console.log("ERROR: OneRestaurant useEffect::", err));
-  }, [targetProductSearchObj, productRebuild]);
-
+  }, [ chosenRestaurantId, targetProductSearchObj, productRebuild]);
 
   // ========== HANDLERS ==============//
   const chosenRestaurantHandler = (id: string) => {
-    setchosenRestaurantId(id)
-    targetProductSearchObj.restaurant_mb_id = id
-    setTargetProductSearchObj({...targetProductSearchObj})
-    history.push(`/restaurant/${id}`)
-  }
-  
+    setchosenRestaurantId(id);
+    targetProductSearchObj.restaurant_mb_id = id;
+    setTargetProductSearchObj({ ...targetProductSearchObj });
+    history.push(`/restaurant/${id}`);
+  };
+
   const searchCollectionHandler = (collection: string) => {
     targetProductSearchObj.page = 1;
     targetProductSearchObj.product_collection = collection;
-    setTargetProductSearchObj({...targetProductSearchObj})
-  }
+    setTargetProductSearchObj({ ...targetProductSearchObj });
+  };
   const searchOrderHandler = (order: string) => {
     targetProductSearchObj.page = 1;
     targetProductSearchObj.order = order;
-    setTargetProductSearchObj({...targetProductSearchObj})
+    setTargetProductSearchObj({ ...targetProductSearchObj });
+  };
+
+  const chosenDishHandler = (id: string) => {
+    history.push(`/restaurant/dish/${id}`)
   }
+
   const targetLikeProduct = async (e: any) => {
     try {
       assert.ok(localStorage.getItem("member_data"), Definer.auth_err1);
@@ -133,7 +147,7 @@ export function OneRestaurant() {
       });
       assert.ok(like_result, Definer.general_err1);
       await sweetTopSmallSuccessAlert("Success", 700, false);
-      setProductRebuild(new Date())
+      setProductRebuild(new Date());
     } catch (error: any) {
       console.log("targetLikeProduct ERROR::", error);
       sweetErrorHandling(error).then();
@@ -188,10 +202,10 @@ export function OneRestaurant() {
               }}
             >
               {randomRestaurants.map((ele: Restaurant) => {
-                const image_path = `${serviceApi}/${ele.mb_image}`
+                const image_path = `${serviceApi}/${ele.mb_image}`;
                 return (
                   <SwiperSlide
-                  onClick={() => chosenRestaurantHandler(ele._id)}
+                    onClick={() => chosenRestaurantHandler(ele._id)}
                     className="restaurant_avatars"
                     key={ele._id}
                     style={{ cursor: "pointer" }}
@@ -214,23 +228,31 @@ export function OneRestaurant() {
             sx={{ mt: "65px" }}
           >
             <Box className="dishs_filter_box">
-              <Button variant="contained" color="secondary"
-              onClick={() => searchOrderHandler("createdAt")}
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => searchOrderHandler("createdAt")}
               >
                 New
               </Button>
-              <Button variant="contained" color="secondary"
-              onClick={() => searchOrderHandler("product_price")}
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => searchOrderHandler("product_price")}
               >
                 price
               </Button>
-              <Button variant="contained" color="secondary"
-              onClick={() => searchOrderHandler("product_likes")}
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => searchOrderHandler("product_likes")}
               >
                 likes
               </Button>
-              <Button variant="contained" color="secondary"
-              onClick={() => searchOrderHandler("product_views")}
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => searchOrderHandler("product_views")}
               >
                 views
               </Button>
@@ -243,28 +265,38 @@ export function OneRestaurant() {
           >
             <Stack className="dish_category_box">
               <div className="dish_category_main">
-                <Button variant="contained" color="secondary"
-                onClick={() => searchCollectionHandler("etc")}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => searchCollectionHandler("etc")}
                 >
                   boshqa
                 </Button>
-                <Button variant="contained" color="secondary"
-                onClick={() => searchCollectionHandler("dessert")}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => searchCollectionHandler("dessert")}
                 >
                   desert
                 </Button>
-                <Button variant="contained" color="secondary"
-                onClick={() => searchCollectionHandler("drinks")}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => searchCollectionHandler("drinks")}
                 >
                   ichimlik
                 </Button>
-                <Button variant="contained" color="secondary"
-                onClick={() => searchCollectionHandler("salad")}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => searchCollectionHandler("salad")}
                 >
                   salad
                 </Button>
-                <Button variant="contained" color="secondary"
-                onClick={() => searchCollectionHandler("dish")}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => searchCollectionHandler("dish")}
                 >
                   ovqatlar
                 </Button>
@@ -278,17 +310,24 @@ export function OneRestaurant() {
                   product.product_collection === "drinks"
                     ? product.product_volume + ".L"
                     : product.product_size + " size";
-                    console.log("Imageeeee::",product.product_images)
+                console.log("Imageeeee::", product.product_images);
                 return (
-                  <Box className="dish_box" key={product._id}>
+                  <Box
+                  sx={{cursor:'pointer'}} 
+                  onClick={() => chosenDishHandler(product._id)}
+                  className="dish_box" key={product._id}>
                     <Box
+              
                       className="dish_img"
                       sx={{
                         backgroundImage: `url(${image_path})`,
                       }}
                     >
                       <div className="dish_sale">{size_volume}</div>
-                      <Button
+                      <Box 
+                        onClick={(e) => {e.stopPropagation()}}
+                      >
+                        <Button
                         className="like_view_btn"
                         style={{ left: "36px" }}
                       >
@@ -310,7 +349,8 @@ export function OneRestaurant() {
                           />
                         </Badge>
                       </Button>
-                      <Button className="view_btn">
+                      <Button
+                      className="view_btn">
                         <img
                           src="/icons/shopping_card.svg"
                           alt="shopping_card"
@@ -332,6 +372,8 @@ export function OneRestaurant() {
                           />
                         </Badge>
                       </Button>
+                      </Box>
+                      
                     </Box>
                     <Box className="dish_desc">
                       <span className="dish_title_text">
@@ -407,12 +449,12 @@ export function OneRestaurant() {
           <Box
             className="about_left"
             sx={{
-              backgroundImage: `url("/restaurant/Burak_restaurant_view.jpg")`,
+              backgroundImage: `url(${serviceApi}/${chosenRestaurant?.mb_image})`,
             }}
-          >
+          > 
             <div className="about_left_desc">
-              <span>Burak CNZ</span>
-              <p>Turk Oshxona brendi</p>
+              <span>{chosenRestaurant?.mb_nick}</span>
+              <p>{chosenRestaurant?.mb_description}</p>
             </div>
           </Box>
           <Box className="about_right">

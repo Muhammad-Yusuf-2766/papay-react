@@ -7,7 +7,7 @@ import "../../../css/restaurant.css";
 
 export function RestaurantPage() {
   let restaurant = useRouteMatch();
-  console.log(restaurant);
+  console.log("Restaurant_path::::",restaurant);
   return (
     <div className="restaurant_page">
       <Switch>

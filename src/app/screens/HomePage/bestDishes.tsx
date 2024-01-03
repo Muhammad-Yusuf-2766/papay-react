@@ -11,6 +11,7 @@ import { retrieveTrendProducts } from "./selector";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 import { serviceApi } from "../../../lib/config";
+import { useHistory } from "react-router-dom";
 
 //===== Redux Slice ===== //
 
@@ -28,6 +29,7 @@ const trendProductsRetriever = createSelector(
 
 export function BestDishes() {
   //===== Initialization ===== //
+  const history = useHistory();
   const { setTrendProducts } = actionDispatch(useDispatch());
   const { trendProducts } = useSelector(trendProductsRetriever);
   useEffect(() => {
@@ -37,6 +39,11 @@ export function BestDishes() {
       .then((data) => setTrendProducts(data))
       .catch((err) => console.log(err));
   }, []);
+
+  // ======== Handlers ========== //
+  const chosenDishHandler = (id: string) => {
+    history.push(`/restaurant/dish/${id}`)
+  }
 
   return (
     <div className="best_dishes_frame">
@@ -57,7 +64,9 @@ export function BestDishes() {
                     sx={{ backgroundImage: `url(${image_path})` }}
                   >
                     <div className="dish_sale">{size_volume}</div>
-                    <div className="view_btn">
+                    <div 
+                    onClick={() => chosenDishHandler(product._id)}
+                    className="view_btn">
                       Batafsil Ko'rish
                       <img
                         src="icons/Arrow-right.svg"

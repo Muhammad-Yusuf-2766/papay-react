@@ -14,6 +14,6 @@ export const retrieveChosenRestaurant = createSelector(
 export const retrieveTargetProducts = createSelector(
     selectRestaurantPage, (RestaurantPage) => RestaurantPage.targetProducts
 );
-export const retrieveChosenDish = createSelector(
+export const retrieveChosenProduct = createSelector(
     selectRestaurantPage, (RestaurantPage) => RestaurantPage.chosenProduct
 );

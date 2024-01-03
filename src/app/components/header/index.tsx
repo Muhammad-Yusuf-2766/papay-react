@@ -14,7 +14,6 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 export function NavbarHome(props: any) {
-
   return (
     <div className="format home_navbar">
       <Container>
@@ -55,11 +54,13 @@ export function NavbarHome(props: any) {
               </Box>
             ) : null}
 
-            <Box className="hover_line" onClick={props.setPath}>
-              <NavLink to={"/orders"} activeClassName="underline">
-                Buyurtma
-              </NavLink>
-            </Box>
+            {props.verifiedMemberData ? (
+              <Box className="hover_line" onClick={props.setPath}>
+                <NavLink to={"/orders"} activeClassName="underline">
+                  Buyurtma
+                </NavLink>
+              </Box>
+            ) : null}
             <Box className="hover_line" onClick={props.setPath}>
               <NavLink to={"/help"} activeClassName="underline">
                 Yordam
@@ -138,9 +139,9 @@ export function NavbarHome(props: any) {
             >
               <MenuItem onClick={props.handleLogOutRequest}>
                 <ListItemIcon>
-                  <Box sx={{color: "black"}}>
-                  <Logout fontSize="small" style={{ color: "blue" }}/>
-                  Log-out
+                  <Box sx={{ color: "black" }}>
+                    <Logout fontSize="small" style={{ color: "blue" }} />
+                    Log-out
                   </Box>
                 </ListItemIcon>
               </MenuItem>

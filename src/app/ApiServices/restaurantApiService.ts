@@ -4,6 +4,7 @@ import { serviceApi } from "../../lib/config";
 import { Definer } from "../../lib/definer";
 import { Restaurant } from "../../types/user";
 import { SearchObj } from "../../types/others";
+import { data } from 'dom7';
 
 class RestaurantApiService {
     private readonly path: string;
@@ -45,6 +46,22 @@ class RestaurantApiService {
             throw error
         }
     }
+
+    async getChosenRestaurant(id: string) {
+        try {
+            const url = `/restaurants/${id}`
+            const result = await axios.get(this.path+url, {withCredentials: true})
+            assert.ok(result, Definer.general_err1)
+            
+            console.log("State:", result.data.data);
+            const restaurant: Restaurant = result.data.data
+            return restaurant
+        } catch (error: any) {
+            console.log(`ERROR::: getChosenRestaurant ${error.message}`);
+            throw error
+        }
+    }
+
 }
 
 export default RestaurantApiService

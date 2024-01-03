@@ -51,11 +51,13 @@ export function NavbarRestaurant(props: any) {
                 </NavLink>
               </Box>
             ) : null}
-            <Box className="hover_line" onClick={props.setPath}>
-              <NavLink to={"/orders"} activeClassName="underline">
-                Buyurtma
-              </NavLink>
-            </Box>
+            {props.verifiedMemberData ? (
+              <Box className="hover_line" onClick={props.setPath}>
+                <NavLink to={"/orders"} activeClassName="underline">
+                  Buyurtma
+                </NavLink>
+              </Box>
+            ) : null}
             <Box className="hover_line" onClick={props.setPath}>
               <NavLink to={"/help"} activeClassName="underline">
                 Yordam
