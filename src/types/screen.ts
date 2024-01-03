@@ -9,7 +9,8 @@ import { Order } from "./order";
 // React App State
 export interface AppRootState {
     homePage: HomePageState;
-    restauranPage: RestaurantPageState
+    restauranPage: RestaurantPageState,
+    ordersPage: OrdersPageState
 }
 
 // Homepage State

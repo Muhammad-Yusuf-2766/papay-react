@@ -3,6 +3,18 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
+// ============  REDUX ============//
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrievePausedOrders } from "../../screens/OrdersPage/selector";
+
+//===== Redux Selector ===== //
+const pausedOrdersRetriever = createSelector(
+  retrievePausedOrders,
+  (pausedOrders) => ({
+    pausedOrders,
+  })
+);
 
 const pausedOrders = [
   [1, 2, 3],
@@ -11,6 +23,8 @@ const pausedOrders = [
 ];
 
 export default function PausedOrders(props: any) {
+  //===== Initialization ===== //
+  // const { pausedOrders } = useSelector(pausedOrdersRetriever);
   return (
     <TabPanel value="1">
       <Stack>
