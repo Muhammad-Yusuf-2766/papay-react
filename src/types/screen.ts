@@ -1,6 +1,10 @@
 import { BoArticle } from "./boArticle";
 import { Product } from "./product";
 import { Restaurant } from "./user";
+import PausedOrders from '../app/components/orders/pausedOrders';
+import ProcessOrders from '../app/components/orders/processOrder';
+import FinishedOrders from '../app/components/orders/finishedOrders';
+import { Order } from "./order";
 
 // React App State
 export interface AppRootState {
@@ -25,4 +29,11 @@ export interface RestaurantPageState {
     chosenRestaurant: Restaurant | null,
     targetProducts: Product[],
     chosenProduct: Product | null
+}
+
+// Orders-Page State
+export interface OrdersPageState {
+    pausedOrders: Order[],
+    processOrders: Order[],
+    finishedOrders: Order[]
 }
