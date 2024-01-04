@@ -10,13 +10,16 @@ import { serviceApi } from "../../../lib/config";
 import { sweetErrorHandling } from "../../../lib/sweetAlet";
 import { Definer } from "../../../lib/definer";
 import assert from "assert";
+import OrderApiService from "../../ApiServices/orderApiService";
+import { useHistory } from "react-router-dom";
 
 export default function Basket(props: any) {
   /** INITIALIZATIONS **/
+  const history = useHistory()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const { cartItems, onAdd, onRemove, onDelete } = props;
+  const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = props;
   const itemsPrice = cartItems?.reduce(
     (a: any, c: CartItem) => a + c.price * c.quantity,
     0
@@ -36,7 +39,15 @@ export default function Basket(props: any) {
 
   const processOrderHandler = async () => {
     try {
-      assert.ok(localStorage.get("member_data"), Definer.auth_err1)
+      assert.ok(localStorage.getItem("member_data"), Definer.auth_err1)
+      const order = new OrderApiService()
+      await order.createOrder(cartItems)
+
+      onDeleteAll()
+      handleClose()
+
+      history.push("/orders")
+
     } catch (error: any) {
       console.log(error);
       sweetErrorHandling(error).then()
@@ -53,7 +64,7 @@ export default function Basket(props: any) {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <Badge badgeContent={1} color="secondary">
+        <Badge badgeContent={cartItems.length} color="secondary">
           <img src={"/icons/shopping_basket.svg"} alt="" />
         </Badge>
       </IconButton>
