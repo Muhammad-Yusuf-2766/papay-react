@@ -74,7 +74,7 @@ const TargetProductsRetriever = createSelector(
   })
 );
 
-export function OneRestaurant() {
+export function OneRestaurant(props: any) {
   //===== Initialization ===== //
   const history = useHistory();
   let { restaurant_id } = useParams<{ restaurant_id: string }>();
@@ -310,11 +310,10 @@ export function OneRestaurant() {
                   product.product_collection === "drinks"
                     ? product.product_volume + ".L"
                     : product.product_size + " size";
-                console.log("Imageeeee::", product.product_images);
                 return (
                   <Box
                   sx={{cursor:'pointer'}} 
-                  onClick={() => chosenDishHandler(product._id)}
+                  onClick={() => chosenDishHandler(product._id)}  
                   className="dish_box" key={product._id}>
                     <Box
               
@@ -325,7 +324,7 @@ export function OneRestaurant() {
                     >
                       <div className="dish_sale">{size_volume}</div>
                       <Box 
-                        onClick={(e) => {e.stopPropagation()}}
+                      onClick={(e) => e.stopPropagation()}
                       >
                         <Button
                         className="like_view_btn"
@@ -350,6 +349,11 @@ export function OneRestaurant() {
                         </Badge>
                       </Button>
                       <Button
+                      onClick={(e) => {
+                        console.log('Order_basket button clicked');
+                        props.onAdd(product)
+                        e.stopPropagation()
+                      }}
                       className="view_btn">
                         <img
                           src="/icons/shopping_card.svg"

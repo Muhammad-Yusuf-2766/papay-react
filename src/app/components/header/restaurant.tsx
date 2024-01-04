@@ -63,7 +63,7 @@ export function NavbarRestaurant(props: any) {
               </NavLink>
             </Box>
 
-            <Basket />
+            <Basket cartItems={props.cartItems} onAdd={props.onAdd} />
 
             {!props.verifiedMemberData ? (
               <Box>
@@ -84,7 +84,7 @@ export function NavbarRestaurant(props: any) {
               />
             )}
 
-<Menu
+            <Menu
               anchorEl={props.anchorEl}
               open={props.open}
               onClose={props.handleCloseLogOut}
@@ -122,9 +122,9 @@ export function NavbarRestaurant(props: any) {
             >
               <MenuItem onClick={props.handleLogOutRequest}>
                 <ListItemIcon>
-                  <Box sx={{color: "black"}}>
-                  <Logout fontSize="small" style={{ color: "blue" }}/>
-                  Log-out
+                  <Box sx={{ color: "black" }}>
+                    <Logout fontSize="small" style={{ color: "blue" }} />
+                    Log-out
                   </Box>
                 </ListItemIcon>
               </MenuItem>

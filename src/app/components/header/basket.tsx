@@ -5,11 +5,23 @@ import Menu from "@mui/material/Menu";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import React from "react";
+import { CartItem } from "../../../types/others";
+import { serviceApi } from "../../../lib/config";
 
 export default function Basket(props: any) {
   /** INITIALIZATIONS **/
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  const { cartItems, onAdd } = props;
+  const itemsPrice = cartItems?.reduce(
+    (a: any, c: CartItem) => a + c.price * c.quantity,
+    0
+  );
+    console.log("ItemsPrice", itemsPrice);
+    const shippingPrice = itemsPrice > 100 ? 0 : 2
+    const totalPrice = itemsPrice + shippingPrice
+    
 
   /** HANDLERS **/
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -32,7 +44,7 @@ export default function Basket(props: any) {
         onClick={handleClick}
       >
         <Badge badgeContent={1} color="secondary">
-          <img src={"/icons/shopping_basket.svg"} />
+          <img src={"/icons/shopping_basket.svg"} alt="" />
         </Badge>
       </IconButton>
       <Menu
@@ -41,29 +53,31 @@ export default function Basket(props: any) {
         open={open}
         onClose={handleClose}
         // onClick={handleClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-            mt: 1.5,
-            "& .MuiAvatar-root": {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            "&:before": {
-              content: '""',
-              display: "block",
-              position: "absolute",
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
-              zIndex: 0,
+        slotProps={{
+          paper: {
+            elevation: 0,
+            sx: {
+              overflow: "visible",
+              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+              mt: 1.5,
+              "& .MuiAvatar-root": {
+                width: 32,
+                height: 32,
+                marginLeft: -0.5,
+                marginRight: 1,
+              },
+              "&:before": {
+                content: '""',
+                display: "block",
+                position: "absolute",
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: "background.paper",
+                transform: "translateY(-50%) rotate(45deg)",
+                zIndex: 0,
+              },
             },
           },
         }}
@@ -77,8 +91,8 @@ export default function Basket(props: any) {
 
           <Box className={"orders_main_wrapper"}>
             <Box className={"orders_wrapper"}>
-              {[0].map(() => {
-                const image_path = "/restaurant/Top_restaurant_3.jpg";
+              {cartItems?.map((item: CartItem) => {
+                const image_path = `${serviceApi}/${item?.image}`;
                 return (
                   <Box className={"basket_info_box"}>
                     <div className={"cancel_btn"}>
@@ -87,9 +101,11 @@ export default function Basket(props: any) {
                         // onClick={}
                       />
                     </div>
-                    <img src={image_path} className={"product_img"} />
-                    <span className={"product_name"}>Shashlik</span>
-                    <p className={"product_price"}>$10 x 2</p>
+                    <img src={image_path} className={"product_img"} alt="" />
+                    <span className={"product_name"}>{item.name}</span>
+                    <p className={"product_price"}>
+                      ${item.price} x {item.quantity}
+                    </p>
                     <Box sx={{ minWidth: 120 }}>
                       <div className="col-2">
                         <button
@@ -99,7 +115,7 @@ export default function Basket(props: any) {
                           -
                         </button>{" "}
                         <button
-                          //  onClick={}
+                           onClick={() => onAdd(item)}
                           className="add"
                         >
                           +
@@ -111,9 +127,9 @@ export default function Basket(props: any) {
               })}
             </Box>
           </Box>
-          {true ? (
+          {cartItems?.length > 0 ? (
             <Box className={"to_order_box"}>
-              <span className={"price_text"}>Jami: $22 (20 + 2)</span>
+              <span className={"price_text"}>Jami: ${totalPrice} ({itemsPrice} + {shippingPrice})</span>
               <Button
                 onClick={processOrderHandler}
                 startIcon={<ShoppingCartIcon />}

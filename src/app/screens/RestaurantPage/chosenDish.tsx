@@ -58,7 +58,7 @@ const chosenRestaurantRetriever = createSelector(
 );
 
 
-export function ChosenDish() {
+export function ChosenDish(props: any) {
   // ========= Initializations ================= //
   let { dish_id } = useParams<{ dish_id: string }>();
   const { setChosenRestaurant, setChosenProduct } =
@@ -221,6 +221,7 @@ export function ChosenDish() {
               <Button
                 style={{ width: "230px", height: "44px" }}
                 variant="contained"
+                onClick={() => {props.onAdd(chosenProduct)}}
               >
                 Savatga Qo'shish
               </Button>
