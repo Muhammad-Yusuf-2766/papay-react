@@ -85,13 +85,15 @@ export function OrdersPage(props: any) {
 
         <Stack className="order_right">
           <Box className="order_info_box">
-            <Box className="order_user_img" />
-            <p className="order_user_name">Sami Yusuf</p>
-            <p className="order_user_prof">Foydalanuvchi</p>
+            <Box className="order_user_img">
+              <img src={props.verifiedMemberData?.mb_image} alt="" className="order_user_img" />
+            </Box>
+            <p className="order_user_name">{props.verifiedMemberData?.mb_nick}</p>
+            <p className="order_user_prof">{props.verifiedMemberData?.mb_type ?? 'Foydaluvchi'}</p>
             <Box className="marginer"></Box>
             <Box className="order_user_address">
               <LocationOnIcon style={{ color: "#2E3A59" }} />
-              <p>Turkiye Istanbul</p>
+              <p>{props.verifiedMemberData?.mb_address ?? 'Manzil kiritilmagan'}</p>
             </Box>
           </Box>
           <Box className="payment_box">
