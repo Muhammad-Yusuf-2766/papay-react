@@ -3,85 +3,117 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
-// ============  REDUX ============//
-import { useSelector } from "react-redux";
+// REDUX
+import {  useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrieveProcessOrders } from "../../screens/OrdersPage/selector";
+import { Order } from "../../../types/order";
+import { Product } from "../../../types/product";
+import { serviceApi } from "../../../lib/config";
+import moment from "moment";
+import { sweetErrorHandling, sweetFailureProvider } from "../../../lib/sweetAlet";
+import OrderApiService from "../../ApiServices/orderApiService"
 
-//===== Redux Selector ===== //
+/**REDUX SELECTOR */
 const processOrdersRetriever = createSelector(
   retrieveProcessOrders,
   (processOrders) => ({
-    processOrders,
+    processOrders
   })
 );
 
-const pausedOrders = [
-  [1, 2, 3],
-  [1, 2, 3],
-  [1, 2, 3],
-];
+
 
 export default function ProcessOrders(props: any) {
-    //===== Initialization ===== //
-  // const { processOrders } = useSelector(processOrdersRetriever);
+  /**INITIALIZATIONS */
+  const { processOrders } = useSelector(processOrdersRetriever);
+
+  /**HANDLERS */
+  const finishOrderHandler = async (event: any) => {
+    try {
+      console.log("id", event.target.value);
+
+      const order_id = event.target.value;
+      const data = { order_id: order_id, order_status: "FINISHED" };
+
+      if (!localStorage.getItem("member_data")) {
+        sweetFailureProvider("Please login first", true);
+      }
+
+      let confirmation = window.confirm(
+        "Buyurtmani olganingizni tasdiqlaysizmi?"
+      );
+      if (confirmation) {
+        const orderServer = new OrderApiService();
+        await orderServer.updateOrderStatus(data).then();
+        props.setOrderRebuild(new Date());
+      }
+    } catch (err) {
+      console.log("finishOrderHandler, ERROR:", err);
+      sweetErrorHandling(err).then();
+    }
+  };
   return (
     <TabPanel value="2">
       <Stack>
-        {pausedOrders?.map((order, index) => {
+        {processOrders?.map((order: Order) => {
           return (
             <Box className={"order_main_box"}>
               <Box className={"order_box_scroll"}>
-                {order.map((item, itemIndex) => {
-                  const image_path = "/restaurant/recommendations_3.jpeg";
+                {order.order_items.map((item) => {
+                  const product: Product = order.product_data.filter(
+                    (ele) => ele._id === item.product_id
+                  )[0];
+                  const image_path = `${serviceApi}/${product.product_images[0]}`;
                   return (
                     <Box className={"ordersName_price"}>
-                      <img src={image_path} className={"orderDishImg"} alt="" />
-                      <p className={"titleDish"}>Turk Kebab</p>
+                        <img
+                          src={image_path}
+                          className={"orderDishImg"}
+                          alt=""
+                        />
+                        <p className={"titleDish"}>{product.product_name}</p>
                       <Box className={"priceBox"}>
-                        <p>$7</p>
+                        <p>${item.item_price}</p>
                         <img src="/icons/Close.svg" alt="close" />
-                        <p>3</p>
+                        <p style={{ marginLeft: "3px" }}>
+                          {item.item_quantity}
+                        </p>
                         <img src="/icons/Pause.svg" alt="pause" />
-                        <p style={{ marginLeft: "15px" }}>$21</p>
+                        <p> ${item.item_price * item.item_quantity}</p>
                       </Box>
                     </Box>
                   );
                 })}
               </Box>
-              <Box className='process'>
-              <Box className={"total_price_box black_solid"}>
-                <Box className={"boxTotal"}>
-                  <p>mahsulot narxi</p>
-                  <p>$21</p>
-                  <img
-                    src="/icons/Plus.svg"
-                    alt="plus"
-                    style={{ marginLeft: "20px" }}
-                  />
-                  <p>yetkazish xizmati</p>
-                  <p>$2</p>
-                  <img
-                    src="/icons/pause.svg"
-                    alt="pause"
-                    style={{ marginLeft: "20px" }}
-                  />
-                  <p>jami narx</p>
-                  <p>$23</p>
+              <Box className="process">
+                <Box className={"total_price_box black_solid"}>
+                  <Box className={"boxTotal"}>
+                    <p>
+                      mahsulot:$
+                      {order.order_total_amount - order.order_delivery_cost}
+                    </p>
+                    <img src="/icons/Plus.svg" alt="plus" />
+                    <p>yetkazish:${order.order_delivery_cost}</p>
+                    <img src="/icons/pause.svg" alt="pause" />
+                    <p>jami:${order.order_total_amount}</p>
+                  </Box>
+                  <p className="data_compl" style={{ marginTop: "8px" }}>
+                    {moment(order.createdAt).format("YY-MM-DD HH:mm")}
+                  </p>
+                  <Button
+                    value={order._id}
+                    onClick={finishOrderHandler}
+                    variant="contained"
+                    style={{
+                      background: "#o288d1",
+                      color: "white",
+                      borderRadius: "10px"
+                    }}>
+                    Yakunlash
+                  </Button>
                 </Box>
-                <Button
-                 variant="contained"
-                 style={{
-                  background:'#o288d1',
-                  color:'white',
-                  borderRadius:'10px'
-                 }} 
-                >
-                  Yakunlash
-                </Button>
               </Box>
-              </Box>
-              
             </Box>
           );
         })}

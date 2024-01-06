@@ -42,6 +42,7 @@ function App() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [orderRebuild, setOrderRebuild] = useState<Date>(new Date());
 
   const cartJson: any = localStorage.getItem("Cart_data");
   const current_cart: CartItem[] = JSON.parse(cartJson) ?? [];
@@ -117,13 +118,15 @@ function App() {
       (ele: CartItem) => ele._id === item._id
     );
     if (item_data.quantity === 1) {
-      const cart_updated = cartItems.filter((ele: CartItem) => ele._id !== item._id)
+      const cart_updated = cartItems.filter(
+        (ele: CartItem) => ele._id !== item._id
+      );
 
       setCartItems(cart_updated);
       localStorage.setItem("Cart_data", JSON.stringify(cart_updated));
     } else {
       const cart_updated = cartItems.map((ele: CartItem) =>
-      ele._id === item._id
+        ele._id === item._id
           ? { ...item_data, quantity: item_data.quantity - 1 }
           : ele
       );
@@ -132,13 +135,15 @@ function App() {
     }
   };
   const onDelete = (item: CartItem) => {
-    const cart_updated = cartItems.filter((ele: CartItem) => ele._id !== item._id)  
+    const cart_updated = cartItems.filter(
+      (ele: CartItem) => ele._id !== item._id
+    );
     setCartItems(cart_updated);
-      localStorage.setItem("Cart_data", JSON.stringify(cart_updated));
+    localStorage.setItem("Cart_data", JSON.stringify(cart_updated));
   };
   const onDeleteAll = () => {
     setCartItems([]);
-      localStorage.removeItem("Cart_data");
+    localStorage.removeItem("Cart_data");
   };
 
   return (
@@ -159,6 +164,7 @@ function App() {
           onRemove={onRemove}
           onDelete={onDelete}
           onDeleteAll={onDeleteAll}
+          setOrderRebuild={setOrderRebuild}
         />
       ) : main_path.includes("/restaurant") ? (
         <NavbarRestaurant
@@ -176,6 +182,7 @@ function App() {
           onRemove={onRemove}
           onDelete={onDelete}
           onDeleteAll={onDeleteAll}
+          setOrderRebuild={setOrderRebuild}
         />
       ) : (
         <NavbarOthers
@@ -193,6 +200,7 @@ function App() {
           onRemove={onRemove}
           onDelete={onDelete}
           onDeleteAll={onDeleteAll}
+          setOrderRebuild={setOrderRebuild}
         />
       )}
 
@@ -204,7 +212,10 @@ function App() {
           <CommunityPage />
         </Route>
         <Route path="/orders">
-          <OrdersPage />
+          <OrdersPage
+            orderRebuild={orderRebuild}
+            setOrderRebuild={setOrderRebuild}
+          />
         </Route>
         <Route path="/member-page">
           <MemberPage />
