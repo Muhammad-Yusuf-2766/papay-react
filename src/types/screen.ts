@@ -1,6 +1,6 @@
 import { BoArticle } from "./boArticle";
 import { Product } from "./product";
-import { Restaurant } from "./user";
+import { Member, Restaurant } from "./user";
 import PausedOrders from '../app/components/orders/pausedOrders';
 import ProcessOrders from '../app/components/orders/processOrder';
 import FinishedOrders from '../app/components/orders/finishedOrders';
@@ -10,7 +10,8 @@ import { Order } from "./order";
 export interface AppRootState {
     homePage: HomePageState;
     restauranPage: RestaurantPageState,
-    ordersPage: OrdersPageState
+    ordersPage: OrdersPageState,
+    communityPage: CommunityPageState
 }
 
 // Homepage State
@@ -38,3 +39,18 @@ export interface OrdersPageState {
     processOrders: Order[],
     finishedOrders: Order[]
 }
+
+
+/**COMMUNITY PAGE */
+export interface CommunityPageState {
+    targetBoArticles: BoArticle[];
+  }
+  
+  //Member page
+  export interface MemberPageState {
+    chosenMember: Member | null;
+    chosenMemberBoArticles: BoArticle[];
+    chosenSingleBoArticles: BoArticle | null;
+    // memberFollowers: Follower[];
+    // memberFollowings: Following[];
+  }

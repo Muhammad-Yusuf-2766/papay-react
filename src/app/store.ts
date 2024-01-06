@@ -4,6 +4,7 @@ import reduxLogger from "redux-logger"
 import RestaurantPageReducer from './screens/RestaurantPage/slice';
 import { OrdersPage } from './screens/OrdersPage/index';
 import OrdersPageReducer from './screens/OrdersPage/slice';
+import CommunityPageReducer from './screens/CommunityPage/slice';
 
 
 export const store = configureStore({
@@ -11,7 +12,8 @@ export const store = configureStore({
   reducer: {
     homePage: HomePageReducer,
     restauranPage: RestaurantPageReducer,
-    ordersPage: OrdersPageReducer
+    ordersPage: OrdersPageReducer,
+    communityPage: CommunityPageReducer
   },
 });
 
