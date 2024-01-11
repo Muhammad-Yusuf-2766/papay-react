@@ -14,9 +14,63 @@ import { MemberPosts } from "./memberPosts";
 // import { MemberPosts } from "./MemberPosts";
 import styled from 'styled-components';
 import TViewer from "../../components/tuiEditor/TVieewer";
+// ======== REDUX ========= //
+import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { Member, Restaurant } from "../../../types/user";
+import { Dispatch } from "@reduxjs/toolkit";
+import {
+  retrieveChosenMember,
+  retrieveChosenMemberBoArticles,
+  retrieveChosenSingleBoArticles
+} from "./selector";
+import { setChosenMember, setChosenMemberBoArticles, setChosenSingleBoArticles } from "./slice";
+import { BoArticle } from "../../../types/boArticle";
+
+
+// ======= REDUX SLICE ============ /
+const actionDispatch = (dispatch: Dispatch) => ({
+  setChosenMember: (data: Member) => dispatch(setChosenMember(data)),
+  setChosenMemberBoArticles: (data: BoArticle[]) =>
+    dispatch(setChosenMemberBoArticles(data)),
+  setChosenSingleBoArticles: (data: BoArticle) =>
+    dispatch(setChosenSingleBoArticles(data))
+});
+
+/**REDUX SELECTOR */
+const chosenMemberRetriever = createSelector(
+  retrieveChosenMember,
+  (chosenMember) => ({
+    chosenMember
+  })
+);
+const chosenMemberBoArticlesRetriever = createSelector(
+  retrieveChosenMemberBoArticles,
+  (chosenMemberBoArticles) => ({
+    chosenMemberBoArticles
+  })
+);
+const chosenSingleBoArticlesRetriever = createSelector(
+  retrieveChosenSingleBoArticles,
+  (chosenSingleBoArticles) => ({
+    chosenSingleBoArticles
+  })
+);
 
 export function VisitOtherPage(props: any) {
   /** INITIALIZATIONS **/
+  const {
+    setChosenMember,
+    setChosenMemberBoArticles,
+    setChosenSingleBoArticles
+  } = actionDispatch(useDispatch());
+  const {chosenMember} = useSelector(chosenMemberRetriever)
+  const { chosenMemberBoArticles } = useSelector(
+    chosenMemberBoArticlesRetriever
+  );
+  const { chosenSingleBoArticles } = useSelector(
+    chosenSingleBoArticlesRetriever
+  );
   const [value, setValue] = React.useState("4");
 
   /** HANDLERS **/
