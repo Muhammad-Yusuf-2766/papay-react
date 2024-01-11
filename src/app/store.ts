@@ -5,6 +5,7 @@ import RestaurantPageReducer from './screens/RestaurantPage/slice';
 import { OrdersPage } from './screens/OrdersPage/index';
 import OrdersPageReducer from './screens/OrdersPage/slice';
 import CommunityPageReducer from './screens/CommunityPage/slice';
+import { MemberPageReducer } from './screens/MemberPage/slice';
 
 
 export const store = configureStore({
@@ -13,7 +14,8 @@ export const store = configureStore({
     homePage: HomePageReducer,
     restauranPage: RestaurantPageReducer,
     ordersPage: OrdersPageReducer,
-    communityPage: CommunityPageReducer
+    communityPage: CommunityPageReducer,
+    memberPage: MemberPageReducer
   },
 });
 

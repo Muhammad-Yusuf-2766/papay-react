@@ -5,13 +5,15 @@ import PausedOrders from '../app/components/orders/pausedOrders';
 import ProcessOrders from '../app/components/orders/processOrder';
 import FinishedOrders from '../app/components/orders/finishedOrders';
 import { Order } from "./order";
+import { Follower, Following } from "./follow";
 
 // React App State
 export interface AppRootState {
     homePage: HomePageState;
     restauranPage: RestaurantPageState,
     ordersPage: OrdersPageState,
-    communityPage: CommunityPageState
+    communityPage: CommunityPageState,
+    memberPage: MemberPageState
 }
 
 // Homepage State
@@ -51,6 +53,6 @@ export interface CommunityPageState {
     chosenMember: Member | null;
     chosenMemberBoArticles: BoArticle[];
     chosenSingleBoArticles: BoArticle | null;
-    // memberFollowers: Follower[];
-    // memberFollowings: Following[];
+    memberFollowers: Follower[];
+    memberFollowings: Following[];
   }
