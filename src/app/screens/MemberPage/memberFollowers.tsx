@@ -37,9 +37,6 @@ export function MemberFollowers(props: any) {
    const history = useHistory();
    const { setMemberFollowers } = actionDispatch(useDispatch());
    const { memberFollowers } = useSelector(memberFollowersRetriever);
-   const [followersSearchObj, setFollowersSearchObj] = useState<FollowSearchObj>(
-     { page: 1, limit: 5, mb_id: mb_id }
-   );
   return (
     <Stack>
       {followers.map((follower) => {
