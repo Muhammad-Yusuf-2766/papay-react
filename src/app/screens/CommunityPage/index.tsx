@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Container, Stack } from "@mui/material";
 import "../../../css/community.css";
 import Tab from "@mui/material/Tab";
@@ -11,27 +11,82 @@ import TabPanel from "@mui/lab/TabPanel/TabPanel";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CommunityApiService from "../../ApiServices/communityApiService";
+import { BoArticle, SearchArticlesObj } from "../../../types/boArticle";
+// ============  REDUX ============//
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setTargetBoArticles } from "./slice";
+import { retrieveTargetBoArticles } from "./selector";
 
-const targetBoArticles = [1, 2, 3, 4, 5];
+//===== Redux Slice ===== //
+const actionDispatch = (dispach: Dispatch) => ({
+  setTargetBoArticles: (data: BoArticle[]) =>
+    dispach(setTargetBoArticles(data)),
+});
+
+//===== Redux Selector ===== //
+const TargetBoArticlesRetriever = createSelector(
+  retrieveTargetBoArticles,
+  (targetBoArticles) => ({
+    targetBoArticles,
+  })
+);
 
 export function CommunityPage() {
   //===  INITIALIZATION  ===//
+  const { setTargetBoArticles } = actionDispatch(useDispatch());
+  const { targetBoArticles } = useSelector(TargetBoArticlesRetriever);
   const [value, setValue] = React.useState("1");
+  const [searchArticlesObj, setSearchArticlesObj] = useState<SearchArticlesObj>(
+    {
+      bo_id: "all",
+      page: 1,
+      limit: 5,
+    }
+  );
+
+  useEffect(() => {
+    const communityService = new CommunityApiService();
+    communityService
+      .getTargetArticles(searchArticlesObj)
+      .then((data) => setTargetBoArticles(data))
+      .catch((err) => console.log(err));
+  }, [searchArticlesObj]);
 
   //===  HANDLERS  ===//
   const handleChange = (even: React.SyntheticEvent, newValue: string) => {
+    searchArticlesObj.page = 1;
+    switch (newValue) {
+      case "1":
+        searchArticlesObj.bo_id = "all";
+        break;
+      case "2":
+        searchArticlesObj.bo_id = "celebrity";
+        break;
+      case "3":
+        searchArticlesObj.bo_id = "evaluation";
+        break;
+      case "4":
+        searchArticlesObj.bo_id = "story";
+        break;
+    }
+    setSearchArticlesObj({...searchArticlesObj})
     setValue(newValue);
   };
 
   const handlePaginationChange = (event: any, value: number) => {
-    console.log(value);
+    searchArticlesObj.page = value;
+    setSearchArticlesObj({ ...searchArticlesObj });
   };
 
   return (
     <div className="community_page">
       <div className="community_frame">
         <Container sx={{ m: "50px 0" }}>
-          <Stack flexDirection={"row"} justifyContent={"space-between"}  gap={2}>
+          <Stack flexDirection={"row"} justifyContent={"space-between"} gap={2}>
             <CommunityChats />
             <Stack
               className="community_all_frame"
@@ -44,33 +99,49 @@ export function CommunityPage() {
                     <TabList
                       onChange={handleChange}
                       aria-label="lab API tabs example"
-                    //   style={{ backgroundColor: "#0B0E11" }}
+                      //   style={{ backgroundColor: "#0B0E11" }}
                     >
-                      <Tab className="tab_label" label="Barcha Maqolalar" value={"1"} />
-                      <Tab className="tab_label" label="Mashxurlar" value={"2"} />
-                      <Tab className="tab_label" label="Oshxonaga Baho" value={"3"} />
-                      <Tab className="tab_label" label="Hikoyalar" value={"4"} />
+                      <Tab
+                        className="tab_label"
+                        label="Barcha Maqolalar"
+                        value={"1"}
+                      />
+                      <Tab
+                        className="tab_label"
+                        label="Mashxurlar"
+                        value={"2"}
+                      />
+                      <Tab
+                        className="tab_label"
+                        label="Oshxonaga Baho"
+                        value={"3"}
+                      />
+                      <Tab
+                        className="tab_label"
+                        label="Hikoyalar"
+                        value={"4"}
+                      />
                     </TabList>
                   </Box>
                 </Box>
                 <Box className="article_main">
                   <TabPanel value={"1"}>
-                    <TargetArticles targetBoArticles={[1, 2]} />
+                    <TargetArticles targetBoArticles={targetBoArticles} />
                   </TabPanel>
                   <TabPanel value={"2"}>
-                    <TargetArticles targetBoArticles={[1, 2, 3, 4]} />
+                    <TargetArticles targetBoArticles={targetBoArticles} />
                   </TabPanel>
                   <TabPanel value={"3"}>
-                    <TargetArticles targetBoArticles={[1, 2, 3]} />
+                    <TargetArticles targetBoArticles={targetBoArticles} />
                   </TabPanel>
                   <TabPanel value={"4"}>
-                    <TargetArticles targetBoArticles={[1, 2, 3, 4, 5]} />
+                    <TargetArticles targetBoArticles={targetBoArticles} />
                   </TabPanel>
                 </Box>
 
                 <Box
-                className="article_bott"
-                sx={{ justifyContent: "center", display: "flex", mt: 2 }}
+                  className="article_bott"
+                  sx={{ justifyContent: "center", display: "flex", mt: 2 }}
                 >
                   <Pagination
                     count={14}

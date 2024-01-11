@@ -3,7 +3,6 @@ import assert from "assert";
 import { serviceApi } from "../../lib/config"
 import { Definer } from "../../lib/definer";
 import { Member } from "../../types/user";
-import { data } from 'dom7';
 import { MemberLiken } from "../../types/others";
 
 class MemberApiService {
